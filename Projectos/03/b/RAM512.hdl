@@ -1,0 +1,29 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/b/RAM512.hdl
+/**
+ * Memory of 512 16-bit registers.
+ * If load is asserted, the value of the register selected by
+ * address is set to in; Otherwise, the value does not change.
+ * The value of the selected register is emitted by out.
+ */
+CHIP RAM512 {
+    IN in[16], load, address[9];
+    OUT out[16];
+
+    PARTS:
+    DMux8Way(in=load, sel=address[6..8], a=loadout1, b=loadout2, c=loadout3, d=loadout4, e=loadout5, f=loadout6, g=loadout7, h=loadout8);
+
+    RAM64(in=in, load=loadout1, address=address[0..5], out=register1);
+    RAM64(in=in, load=loadout2, address=address[0..5], out=register2);
+    RAM64(in=in, load=loadout3, address=address[0..5], out=register3);
+    RAM64(in=in, load=loadout4, address=address[0..5], out=register4);
+    RAM64(in=in, load=loadout5, address=address[0..5], out=register5);
+    RAM64(in=in, load=loadout6, address=address[0..5], out=register6);
+    RAM64(in=in, load=loadout7, address=address[0..5], out=register7);
+    RAM64(in=in, load=loadout8, address=address[0..5], out=register8);
+
+    Mux8Way16(a=register1, b=register2, c=register3, d=register4, e=register5, f=register6, g=register7, h=register8, sel=address[6..8], out=out); 
+
+}
